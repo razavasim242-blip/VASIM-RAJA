@@ -1,0 +1,231 @@
+{
+  "entities": {
+    "user": {
+      "title": "User Profile",
+      "description": "Customer or operator profile registered via Google Auth",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address",
+          "maxLength": 150
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User full name",
+          "maxLength": 120
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "User profile avatar URL",
+          "maxLength": 500
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "User contact mobile number",
+          "maxLength": 20
+        },
+        "role": {
+          "type": "string",
+          "description": "User access role",
+          "enum": ["customer", "operator", "admin"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of account creation"
+        }
+      },
+      "required": ["uid", "email", "displayName", "role"]
+    },
+    "application": {
+      "title": "Service Application",
+      "description": "Online service or welfare scheme application submitted by customer or operator",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Human-readable application tracking ID",
+          "maxLength": 64
+        },
+        "userId": {
+          "type": "string",
+          "description": "Optional Auth UID of the submitting user",
+          "maxLength": 128
+        },
+        "serviceId": {
+          "type": "string",
+          "description": "Identifier of the applied service",
+          "maxLength": 64
+        },
+        "serviceName": {
+          "type": "string",
+          "description": "Service name in English",
+          "maxLength": 120
+        },
+        "serviceNameHi": {
+          "type": "string",
+          "description": "Service name in Hindi",
+          "maxLength": 150
+        },
+        "applicantName": {
+          "type": "string",
+          "description": "Full name of the applicant",
+          "maxLength": 100
+        },
+        "fatherHusbandName": {
+          "type": "string",
+          "description": "Father or husband name of the applicant",
+          "maxLength": 100
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender of applicant",
+          "maxLength": 20
+        },
+        "dob": {
+          "type": "string",
+          "description": "Date of birth",
+          "maxLength": 20
+        },
+        "mobileNumber": {
+          "type": "string",
+          "description": "10-digit contact mobile number",
+          "maxLength": 20
+        },
+        "email": {
+          "type": "string",
+          "description": "Optional email of applicant",
+          "maxLength": 120
+        },
+        "aadharNumber": {
+          "type": "string",
+          "description": "Masked or full Aadhaar number",
+          "maxLength": 30
+        },
+        "address": {
+          "type": "string",
+          "description": "Full residential address",
+          "maxLength": 300
+        },
+        "villageTown": {
+          "type": "string",
+          "description": "Village or Town name",
+          "maxLength": 100
+        },
+        "postOffice": {
+          "type": "string",
+          "description": "Post Office",
+          "maxLength": 100
+        },
+        "district": {
+          "type": "string",
+          "description": "District name",
+          "maxLength": 100
+        },
+        "state": {
+          "type": "string",
+          "description": "State name",
+          "maxLength": 100
+        },
+        "pinCode": {
+          "type": "string",
+          "description": "PIN code",
+          "maxLength": 10
+        },
+        "paymentStatus": {
+          "type": "string",
+          "description": "Payment status",
+          "enum": ["paid", "pay_at_shop", "pending"]
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "Payment mode used",
+          "maxLength": 50
+        },
+        "transactionRef": {
+          "type": "string",
+          "description": "UPI / Bank transaction reference",
+          "maxLength": 100
+        },
+        "amountPaid": {
+          "type": "number",
+          "description": "Fee amount paid in INR"
+        },
+        "submittedAt": {
+          "type": "string",
+          "description": "Submission display timestamp",
+          "maxLength": 50
+        },
+        "expectedDate": {
+          "type": "string",
+          "description": "Expected delivery date",
+          "maxLength": 50
+        },
+        "status": {
+          "type": "string",
+          "description": "Processing status",
+          "enum": ["submitted", "document_verified", "processing", "ready_for_pickup", "completed"]
+        },
+        "operatorNotes": {
+          "type": "string",
+          "description": "Notes from the cyber cafe operator",
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "id",
+        "serviceId",
+        "serviceName",
+        "serviceNameHi",
+        "applicantName",
+        "fatherHusbandName",
+        "mobileNumber",
+        "address",
+        "district",
+        "state",
+        "pinCode",
+        "paymentStatus",
+        "amountPaid",
+        "submittedAt",
+        "expectedDate",
+        "status"
+      ]
+    },
+    "admin": {
+      "title": "Admin Role Pointer",
+      "description": "Documents designating admin privileges",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Admin email",
+          "maxLength": 150
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Assignment timestamp"
+        }
+      },
+      "required": ["email"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "Collection storing user profiles"
+    },
+    "/applications/{applicationId}": {
+      "schema": "application",
+      "description": "Collection storing customer applications and tracking info"
+    },
+    "/admins/{adminId}": {
+      "schema": "admin",
+      "description": "Collection designating shop operators and admins"
+    }
+  }
+}

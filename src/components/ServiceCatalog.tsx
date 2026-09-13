@@ -77,23 +77,23 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
     <div
       key={service.id}
       id={`service-card-${service.id}`}
-      className="group bg-white rounded-2xl p-4.5 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between relative"
+      className="group bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-4.5 border border-slate-200/80 dark:border-slate-800/80 hover:border-amber-400 dark:hover:border-amber-500 hover:shadow-lg transition-all flex flex-col justify-between relative"
     >
       {/* Card Top: Icon & Tags */}
       <div>
         <div className="flex items-start justify-between gap-2 mb-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-700 group-hover:bg-amber-600 group-hover:text-white transition-colors flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400 group-hover:bg-amber-600 dark:group-hover:bg-amber-500 group-hover:text-white dark:group-hover:text-slate-950 transition-colors flex items-center justify-center shrink-0">
             <ServiceIcon name={service.icon} className="w-5 h-5" />
           </div>
 
           <div className="flex flex-wrap items-center gap-1 justify-end">
             {service.tag && (
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                 {service.tag}
               </span>
             )}
             {service.popular && (
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 border border-amber-200">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
                 {lang === 'hi' ? 'लोकप्रिय' : 'Popular'}
               </span>
             )}
@@ -101,29 +101,29 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
         </div>
 
         {/* Service Title */}
-        <h3 className="font-extrabold text-slate-900 text-sm sm:text-base group-hover:text-amber-800 transition-colors leading-snug">
+        <h3 className="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-amber-800 dark:group-hover:text-amber-400 transition-colors leading-snug">
           {lang === 'hi' ? service.nameHi : service.name}
         </h3>
 
         {/* Subtitle / Description */}
-        <p className="text-xs text-slate-600 mt-1.5 line-clamp-2 leading-relaxed">
+        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
           {lang === 'hi' ? service.descriptionHi : service.description}
         </p>
 
         {/* Processing Time & Fee Badge */}
-        <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-          <div className="flex items-center gap-1 text-slate-500">
-            <Clock className="w-3.5 h-3.5 text-slate-400" />
+        <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
+            <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
             <span>
               {lang === 'hi' ? service.processingTimeHi : service.processingTime}
             </span>
           </div>
 
           <div className="text-right">
-            <span className="text-[11px] text-slate-400 block font-normal">
+            <span className="text-[11px] text-slate-400 dark:text-slate-500 block font-normal">
               {lang === 'hi' ? 'सेवा शुल्क' : 'Service Fee'}
             </span>
-            <span className="font-black text-slate-900 text-sm">
+            <span className="font-black text-slate-900 dark:text-white text-sm">
               ₹{service.fee}
               {service.govtFeeNote && (
                 <span className="text-[10px] font-normal text-slate-500 ml-1">
@@ -135,16 +135,16 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
         </div>
 
         {/* Required Docs Mini List */}
-        <div className="mt-2.5 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-          <div className="text-[11px] font-semibold text-slate-700 flex items-center gap-1 mb-1">
-            <FileCheck className="w-3 h-3 text-emerald-600" />
+        <div className="mt-2.5 bg-slate-50 dark:bg-slate-950/70 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800">
+          <div className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1 mb-1">
+            <FileCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
             <span>{lang === 'hi' ? 'जरूरी दस्तावेज:' : 'Required Documents:'}</span>
           </div>
-          <div className="text-[11px] text-slate-600 flex flex-wrap gap-1">
+          <div className="text-[11px] text-slate-600 dark:text-slate-300 flex flex-wrap gap-1">
             {(lang === 'hi' ? service.requiredDocsHi : service.requiredDocs).slice(0, 3).map((doc, idx) => (
               <span
                 key={idx}
-                className="bg-white px-1.5 py-0.5 rounded text-[10px] border border-slate-200"
+                className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 px-1.5 py-0.5 rounded text-[10px] border border-slate-200 dark:border-slate-700"
               >
                 {doc}
               </span>
@@ -159,12 +159,12 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="mt-4 pt-3 flex items-center gap-2">
+      <div className="mt-4 pt-3 flex items-center gap-2 border-t border-slate-100 dark:border-slate-800">
         <button
           type="button"
           id={`btn-apply-${service.id}`}
           onClick={() => onSelectService(service)}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-amber-600 text-white py-2 px-3 rounded-xl text-xs font-bold transition-all shadow-xs group-hover:shadow-sm cursor-pointer"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 bg-slate-900 dark:bg-amber-500 hover:bg-amber-600 dark:hover:bg-amber-400 text-white dark:text-slate-950 py-2 px-3 rounded-xl text-xs font-bold transition-all shadow-xs group-hover:shadow-sm cursor-pointer"
         >
           <span>{lang === 'hi' ? 'ऑनलाइन आवेदन करें' : 'Apply Online'}</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -178,7 +178,7 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
           rel="noopener noreferrer"
           id={`btn-whatsapp-${service.id}`}
           title="Inquire on WhatsApp"
-          className="w-8 h-8 rounded-xl bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 flex items-center justify-center transition-colors shrink-0"
+          className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-600 dark:hover:bg-emerald-600 hover:text-white text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center transition-colors shrink-0"
         >
           <MessageCircle className="w-4 h-4" />
         </a>
@@ -191,16 +191,16 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-3">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-300 uppercase tracking-wide mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-amber-700" />
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 px-3 py-1 rounded-full border border-amber-300 dark:border-amber-800/80 uppercase tracking-wide mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
             <span>{lang === 'hi' ? 'वर्गीकृत सेवा सूची' : 'Categorized Service Catalog'}</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white tracking-tight">
             {lang === 'hi'
               ? 'पीयूष ट्रैवेल्स – सभी 31+ सेवाएं एवं ऑनलाइन आवेदन'
               : 'Piyush Travels – Categorized Digital Services Directory'}
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
             {lang === 'hi'
               ? 'प्रमाण पत्र, पहचान पत्र, यात्रा, पेंशन, जमीन व ज़ेरॉक्स – किसी भी सेवा पर क्लिक कर तुरंत फॉर्म भरें और ऑनलाइन भुगतान करें।'
               : 'Certificates, IDs, Travel bookings, pensions, land mutation & printing. Select any service to apply online.'}
@@ -209,21 +209,21 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
 
         {/* View Switcher & Counter */}
         <div className="flex items-center gap-3 self-start md:self-end">
-          <div className="text-xs text-slate-500 font-medium">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">
             {lang === 'hi' ? 'कुल सेवाएं:' : 'Services Found:'}{' '}
-            <strong className="text-amber-800 font-bold bg-amber-100 px-2 py-0.5 rounded-full">
+            <strong className="text-amber-800 dark:text-amber-300 font-bold bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 rounded-full">
               {filteredServices.length}
             </strong>
           </div>
 
-          <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs">
+          <div className="inline-flex p-1 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
             <button
               type="button"
               onClick={() => setViewMode('grid')}
               className={`px-2.5 py-1 rounded-lg font-bold flex items-center gap-1 transition-all cursor-pointer ${
                 viewMode === 'grid'
-                  ? 'bg-white text-slate-900 shadow-2xs'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xs'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
               }`}
               title="Grid View"
             >
@@ -235,8 +235,8 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
               onClick={() => setViewMode('grouped')}
               className={`px-2.5 py-1 rounded-lg font-bold flex items-center gap-1 transition-all cursor-pointer ${
                 viewMode === 'grouped'
-                  ? 'bg-white text-slate-900 shadow-2xs'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xs'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
               }`}
               title="Grouped Category View"
             >
@@ -248,7 +248,7 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
       </div>
 
       {/* Category Navigation Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-3 mb-6 scrollbar-thin scrollbar-thumb-slate-200">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-3 mb-6 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
         {categories.map((catKey) => {
           const cat = CATEGORY_LABELS[catKey];
           const isSelected = selectedCategory === catKey;
@@ -262,14 +262,16 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
               onClick={() => setSelectedCategory(catKey)}
               className={`whitespace-nowrap text-xs font-semibold px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
                 isSelected
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                  ? 'bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 shadow-xs'
+                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
               }`}
             >
               <span>{lang === 'hi' ? cat.hi : cat.en}</span>
               <span
                 className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${
-                  isSelected ? 'bg-amber-400 text-slate-950' : 'bg-slate-100 text-slate-600'
+                  isSelected
+                    ? 'bg-amber-400 text-slate-950'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
                 }`}
               >
                 {count}
@@ -281,14 +283,14 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
 
       {/* Services Display: Empty State */}
       {filteredServices.length === 0 && (
-        <div className="bg-white rounded-3xl p-10 text-center border border-slate-200 shadow-xs max-w-md mx-auto my-6">
-          <div className="w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-10 text-center border border-slate-200 dark:border-slate-800 shadow-xs max-w-md mx-auto my-6">
+          <div className="w-12 h-12 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-3">
             <Search className="w-6 h-6" />
           </div>
-          <h3 className="text-base font-bold text-slate-900 mb-1">
+          <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">
             {lang === 'hi' ? 'कोई सेवा नहीं मिली' : 'No matching service found'}
           </h3>
-          <p className="text-xs text-slate-500 mb-4">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
             {lang === 'hi'
               ? 'कृपया दूसरा शब्द खोजें या किसी भी अन्य ऑनलाइन काम के लिए सीधे संपर्क करें।'
               : 'Try searching with different keywords or contact Piyush Travels directly.'}
@@ -297,7 +299,7 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
             <button
               type="button"
               onClick={() => setSelectedCategory('all')}
-              className="text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer"
+              className="text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
             >
               {lang === 'hi' ? 'सभी सेवाएं देखें' : 'View All Services'}
             </button>
@@ -328,10 +330,10 @@ export const ServiceCatalog: React.FC<ServiceCatalogProps> = ({
         <div className="space-y-10">
           {groupedCategories.map((group) => (
             <div key={group.catKey} className="space-y-4">
-              <div className="flex items-center gap-3 border-b border-slate-200 pb-2">
-                <h3 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
+              <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 pb-2">
+                <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
                   <span>{lang === 'hi' ? group.label.hi : group.label.en}</span>
-                  <span className="text-xs font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full">
+                  <span className="text-xs font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 px-2 py-0.5 rounded-full">
                     {group.items.length}
                   </span>
                 </h3>

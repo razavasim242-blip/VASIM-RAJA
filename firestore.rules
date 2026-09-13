@@ -1,0 +1,119 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 1. Global Catch-All Safety Net (Default-Deny)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email != null && request.auth.token.email in ['razavasim242@gmail.com', 'razav75@gmail.com'])
+      );
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'displayName', 'role']) &&
+        data.uid is string && data.uid.size() <= 128 &&
+        data.email is string && data.email.size() <= 150 &&
+        data.displayName is string && data.displayName.size() <= 120 &&
+        data.role in ['customer', 'operator', 'admin'];
+    }
+
+    function isValidApplication(data) {
+      return data.keys().hasAll([
+        'id', 'serviceId', 'serviceName', 'serviceNameHi', 'applicantName',
+        'fatherHusbandName', 'mobileNumber', 'address', 'district', 'state',
+        'pinCode', 'paymentStatus', 'amountPaid', 'submittedAt', 'expectedDate', 'status'
+      ]) &&
+      data.id is string && data.id.size() <= 64 &&
+      data.serviceId is string && data.serviceId.size() <= 64 &&
+      data.serviceName is string && data.serviceName.size() <= 150 &&
+      data.serviceNameHi is string && data.serviceNameHi.size() <= 150 &&
+      data.applicantName is string && data.applicantName.size() <= 120 &&
+      data.fatherHusbandName is string && data.fatherHusbandName.size() <= 120 &&
+      data.mobileNumber is string && data.mobileNumber.size() <= 20 &&
+      data.address is string && data.address.size() <= 500 &&
+      data.district is string && data.district.size() <= 100 &&
+      data.state is string && data.state.size() <= 100 &&
+      data.pinCode is string && data.pinCode.size() <= 10 &&
+      data.paymentStatus in ['paid', 'pay_at_shop', 'pending'] &&
+      data.amountPaid is number && data.amountPaid >= 0 &&
+      data.status in ['submitted', 'document_verified', 'processing', 'ready_for_pickup', 'completed'] &&
+      (!('userId' in data) || data.userId == null || (data.userId is string && data.userId.size() <= 128)) &&
+      (!('operatorNotes' in data) || (data.operatorNotes is string && data.operatorNotes.size() <= 1000));
+    }
+
+    // Test connection probe allowed for connectivity check
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow get: if isValidId(userId) && (isAdmin() || (isSignedIn() && request.auth.uid == userId));
+      allow list: if isAdmin();
+      allow create: if isValidId(userId) && isSignedIn() && request.auth.uid == userId &&
+                    isValidUser(incoming()) && incoming().uid == request.auth.uid &&
+                    (incoming().role == 'customer' || isAdmin());
+      allow update: if isValidId(userId) && isSignedIn() && (isAdmin() || (request.auth.uid == userId && incoming().uid == existing().uid && (isAdmin() || incoming().role == existing().role))) &&
+                    isValidUser(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // Admins Collection
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // Applications Collection
+    match /applications/{applicationId} {
+      // Individual get allowed for admin, owning user, or if customer has the unique tracking ID
+      allow get: if isValidId(applicationId) && (
+        isAdmin() ||
+        (isSignedIn() && resource.data.userId == request.auth.uid) ||
+        resource.data.id == applicationId
+      );
+
+      // List queries strictly enforce owner check or admin privileges
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+
+      // Application creation: open for public service requests or logged-in users
+      allow create: if isValidId(applicationId) &&
+                    isValidApplication(incoming()) &&
+                    (!('userId' in incoming()) || incoming().userId == null || (isSignedIn() && incoming().userId == request.auth.uid));
+
+      // Updates: Admins can update all fields (like status, operatorNotes). Customers can only update contact info or payment confirmation
+      allow update: if isValidId(applicationId) &&
+                    isValidApplication(incoming()) && (
+                      isAdmin() || (
+                        isSignedIn() &&
+                        existing().userId == request.auth.uid &&
+                        incoming().diff(existing()).affectedKeys().hasOnly(['mobileNumber', 'email', 'paymentStatus', 'paymentMethod', 'transactionRef'])
+                      )
+                    );
+
+      allow delete: if isAdmin();
+    }
+  }
+}

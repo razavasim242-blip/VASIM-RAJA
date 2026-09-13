@@ -10,6 +10,8 @@ import {
   MessageCircle,
   FileText,
   Heart,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { SHOP_INFO } from '../data/servicesData';
 
@@ -18,6 +20,8 @@ interface FooterProps {
   onSelectCategory: (cat: string) => void;
   onOpenTrack: () => void;
   onOpenBiodata: () => void;
+  darkMode?: boolean;
+  onToggleDarkMode?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -25,9 +29,11 @@ export const Footer: React.FC<FooterProps> = ({
   onSelectCategory,
   onOpenTrack,
   onOpenBiodata,
+  darkMode,
+  onToggleDarkMode,
 }) => {
   return (
-    <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 pt-12 pb-8 px-4 sm:px-6 no-print">
+    <footer className="bg-slate-900 dark:bg-[#060a14] text-slate-300 dark:text-slate-400 border-t border-slate-800 dark:border-slate-800/80 pt-12 pb-8 px-4 sm:px-6 transition-colors no-print">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-10">
         {/* Brand & Address Column */}
         <div className="lg:col-span-4 space-y-4">
@@ -275,7 +281,7 @@ export const Footer: React.FC<FooterProps> = ({
       </div>
 
       {/* Bottom Copyright & Guarantee */}
-      <div className="max-w-7xl mx-auto pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <div className="max-w-7xl mx-auto pt-6 border-t border-slate-800 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
         <div>
           © {new Date().getFullYear()} {SHOP_INFO.name}. All Rights Reserved. Bagahi Bazar,
           Main Market (Opposite Post Office).
@@ -284,6 +290,30 @@ export const Footer: React.FC<FooterProps> = ({
           <span>Official Contact: 7763890336</span>
           <span>•</span>
           <span>razav75@gmail.com</span>
+          {onToggleDarkMode && (
+            <>
+              <span>•</span>
+              <button
+                type="button"
+                id="btn-footer-toggle-theme"
+                onClick={onToggleDarkMode}
+                className="flex items-center gap-1.5 text-slate-300 hover:text-amber-400 transition-colors cursor-pointer"
+                title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              >
+                {darkMode ? (
+                  <>
+                    <Sun className="w-3.5 h-3.5 text-amber-400" />
+                    <span>{lang === 'hi' ? 'लाइट मोड' : 'Light Mode'}</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-3.5 h-3.5 text-slate-400" />
+                    <span>{lang === 'hi' ? 'डार्क मोड' : 'Dark Mode'}</span>
+                  </>
+                )}
+              </button>
+            </>
+          )}
         </div>
       </div>
 

@@ -15,6 +15,7 @@ import {
 import { ApplicationRecord, ApplicationStatus } from '../types';
 import { getStoredApplications } from '../utils/storage';
 import { SHOP_INFO } from '../data/servicesData';
+import { fetchApplicationFromFirestore } from '../firebase';
 
 interface TrackApplicationModalProps {
   isOpen: boolean;
@@ -32,24 +33,41 @@ export const TrackApplicationModal: React.FC<TrackApplicationModalProps> = ({
   const [searchKey, setSearchKey] = useState('');
   const [searchedRecord, setSearchedRecord] = useState<ApplicationRecord | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    const query = searchKey.trim().toLowerCase();
+    const query = searchKey.trim().toUpperCase();
     if (!query) return;
 
+    setIsSearching(true);
+    setHasSearched(true);
+
+    // 1. Check local storage first for instant response
     const all = getStoredApplications();
-    const found = all.find(
+    let found = all.find(
       (app) =>
-        app.id.toLowerCase() === query ||
+        app.id.toUpperCase() === query ||
         app.mobileNumber.replace(/\D/g, '') === query.replace(/\D/g, '') ||
-        app.applicantName.toLowerCase().includes(query)
+        app.applicantName.toLowerCase().includes(query.toLowerCase())
     );
 
+    // 2. If not found locally, query Firestore
+    if (!found) {
+      try {
+        const cloudDoc = await fetchApplicationFromFirestore(query);
+        if (cloudDoc) {
+          found = cloudDoc;
+        }
+      } catch (err) {
+        console.warn('Firestore track query error:', err);
+      }
+    }
+
     setSearchedRecord(found || null);
-    setHasSearched(true);
+    setIsSearching(false);
   };
 
   const steps: { id: ApplicationStatus; titleEn: string; titleHi: string; descEn: string; descHi: string }[] = [

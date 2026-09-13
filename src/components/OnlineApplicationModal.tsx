@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   User,
@@ -19,6 +19,7 @@ import { ServiceItem, ApplicationRecord } from '../types';
 import { SHOP_INFO } from '../data/servicesData';
 import { generateApplicationId, saveApplication } from '../utils/storage';
 import { PaymentGatewayModal } from './PaymentGatewayModal';
+import { auth, saveApplicationToFirestore } from '../firebase';
 
 interface OnlineApplicationModalProps {
   isOpen: boolean;
@@ -52,6 +53,21 @@ export const OnlineApplicationModal: React.FC<OnlineApplicationModalProps> = ({
   const [district, setDistrict] = useState('Gopalganj');
   const [state, setState] = useState('Bihar');
   const [pinCode, setPinCode] = useState('841428');
+
+  // Prefill user details if logged in via Google
+  useEffect(() => {
+    if (auth.currentUser) {
+      if (!applicantName && auth.currentUser.displayName) {
+        setApplicantName(auth.currentUser.displayName);
+      }
+      if (!email && auth.currentUser.email) {
+        setEmail(auth.currentUser.email);
+      }
+      if (!mobileNumber && auth.currentUser.phoneNumber) {
+        setMobileNumber(auth.currentUser.phoneNumber.replace('+91', ''));
+      }
+    }
+  }, [isOpen]);
 
   // Dynamic custom fields
   const [customData, setCustomData] = useState<Record<string, string>>({});
@@ -208,6 +224,9 @@ export const OnlineApplicationModal: React.FC<OnlineApplicationModalProps> = ({
     };
 
     saveApplication(fullRecord);
+    saveApplicationToFirestore(fullRecord).catch((err) => {
+      console.warn('Firestore cloud sync notice:', err);
+    });
     onApplicationCompleted(fullRecord);
   };
 

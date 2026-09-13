@@ -250,7 +250,7 @@ export const PaymentGatewayModal: React.FC<PaymentGatewayModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-      <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150 relative">
+      <div className="bg-white dark:bg-slate-900 w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden animate-in fade-in zoom-in-95 duration-150 relative">
         {/* Modal Top Header */}
         <div className="bg-gradient-to-r from-slate-900 via-slate-850 to-amber-950 text-white p-4 sm:p-5 relative">
           <button
@@ -298,7 +298,7 @@ export const PaymentGatewayModal: React.FC<PaymentGatewayModalProps> = ({
         </div>
 
         {/* Payment Mode Selector Tabs (UPI, Card, Net Banking, Pay at Shop) */}
-        <div className="grid grid-cols-4 border-b border-slate-200 text-xs font-bold text-center bg-slate-50">
+        <div className="grid grid-cols-4 border-b border-slate-200 dark:border-slate-800 text-xs font-bold text-center bg-slate-50 dark:bg-slate-950/60">
           <button
             type="button"
             onClick={() => {
@@ -307,8 +307,8 @@ export const PaymentGatewayModal: React.FC<PaymentGatewayModalProps> = ({
             }}
             className={`py-3 px-1 sm:px-2 flex flex-col sm:flex-row items-center justify-center gap-1 border-b-2 transition-all cursor-pointer ${
               paymentMode === 'upi'
-                ? 'border-amber-600 text-amber-900 bg-white shadow-2xs'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-amber-600 text-amber-900 dark:text-amber-300 bg-white dark:bg-slate-900 shadow-2xs'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
             <QrCode className="w-4 h-4" />
@@ -323,8 +323,8 @@ export const PaymentGatewayModal: React.FC<PaymentGatewayModalProps> = ({
             }}
             className={`py-3 px-1 sm:px-2 flex flex-col sm:flex-row items-center justify-center gap-1 border-b-2 transition-all cursor-pointer ${
               paymentMode === 'card'
-                ? 'border-amber-600 text-amber-900 bg-white shadow-2xs'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-amber-600 text-amber-900 dark:text-amber-300 bg-white dark:bg-slate-900 shadow-2xs'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
             <CreditCard className="w-4 h-4" />
@@ -339,8 +339,8 @@ export const PaymentGatewayModal: React.FC<PaymentGatewayModalProps> = ({
             }}
             className={`py-3 px-1 sm:px-2 flex flex-col sm:flex-row items-center justify-center gap-1 border-b-2 transition-all cursor-pointer ${
               paymentMode === 'netbanking'
-                ? 'border-amber-600 text-amber-900 bg-white shadow-2xs'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-amber-600 text-amber-900 dark:text-amber-300 bg-white dark:bg-slate-900 shadow-2xs'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
             <Building className="w-4 h-4" />
@@ -355,8 +355,8 @@ export const PaymentGatewayModal: React.FC<PaymentGatewayModalProps> = ({
             }}
             className={`py-3 px-1 sm:px-2 flex flex-col sm:flex-row items-center justify-center gap-1 border-b-2 transition-all cursor-pointer ${
               paymentMode === 'shop'
-                ? 'border-amber-600 text-amber-900 bg-white shadow-2xs'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                ? 'border-amber-600 text-amber-900 dark:text-amber-300 bg-white dark:bg-slate-900 shadow-2xs'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
             <Store className="w-4 h-4" />

@@ -15,6 +15,7 @@ import {
 import { ApplicationRecord, ApplicationStatus } from '../types';
 import { getStoredApplications, updateApplicationStatus } from '../utils/storage';
 import { SHOP_INFO } from '../data/servicesData';
+import { updateApplicationStatusFirestore } from '../firebase';
 
 interface OperatorDashboardModalProps {
   isOpen: boolean;
@@ -43,6 +44,9 @@ export const OperatorDashboardModal: React.FC<OperatorDashboardModalProps> = ({
 
   const handleStatusChange = (id: string, newStatus: ApplicationStatus) => {
     updateApplicationStatus(id, newStatus);
+    updateApplicationStatusFirestore(id, newStatus).catch((err) => {
+      console.warn('Firestore status update notice:', err);
+    });
     setApplications(getStoredApplications());
   };
 
@@ -50,6 +54,9 @@ export const OperatorDashboardModal: React.FC<OperatorDashboardModalProps> = ({
     const app = applications.find((a) => a.id === id);
     if (app) {
       updateApplicationStatus(id, app.status, notesInput);
+      updateApplicationStatusFirestore(id, app.status, notesInput).catch((err) => {
+        console.warn('Firestore notes update notice:', err);
+      });
       setApplications(getStoredApplications());
       setEditingNotesId(null);
       setNotesInput('');
